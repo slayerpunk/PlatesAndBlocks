@@ -23,12 +23,15 @@ public:
 	// Sets default values for this pawn's properties
 	APlate();
 	void SetPlateColor(EPlateColor Color);
+
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EPlateColor PlateColor = EPlateColor::Blue;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EPlateColor PlateColor = EPlateColor::Blue;
+
 
 public:	
 	// Called every frame
