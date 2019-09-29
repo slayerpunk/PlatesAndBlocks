@@ -16,6 +16,17 @@ void APlate::SetPlateColor(EPlateColor Color)
 	PlateColor = Color;
 }
 
+void APlate::SetPlacement(int32 x, int32 y)
+{
+	PlatePos.x = x;
+	PlatePos.y = y;
+}
+
+PlatePosition APlate::GetPlacement()
+{
+	return PlatePos;
+}
+
 // void APlate::RefreshColor()
 // {
 // 	return;

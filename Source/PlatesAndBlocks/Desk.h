@@ -19,7 +19,8 @@ class PLATESANDBLOCKS_API ADesk : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADesk();
-
+	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
+	void SetBoard(int32 x, int32 y, int32 state);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,7 +42,7 @@ private:
 
 	static const int32 Width = 5;
 	static const int32 Height = 5;
-	TArray<int32> Board[Width][Height];
+	int32 Board[Width][Height];
 
 	TArray<EPlateColor> PlateColorsArr;
 };

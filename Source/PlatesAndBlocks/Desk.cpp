@@ -12,6 +12,21 @@ ADesk::ADesk()
 
 }
 
+bool ADesk::IsPlaceFreeAndCorrect(int32 x, int32 y)
+{
+	if ( x >= 0 && x < Width && y >= 0 && y < Height )
+	{
+		if (Board[x][y] == 0)
+			return true;
+	}
+	return false;
+}
+
+void ADesk::SetBoard(int32 x, int32 y, int32 state)
+{
+	Board[x][y] = state;
+}
+
 // Called when the game starts or when spawned
 void ADesk::BeginPlay()
 {
@@ -27,11 +42,11 @@ void ADesk::BeginPlay()
 	//Make a location for the new actor to spawn at (300 units above this actor)  
 	FVector StartLocation = GetActorLocation() + FVector(0.f, 0.f, 16.f);
 	FVector NewLocation = StartLocation;
-	for (int i = 0; i < Width; i++)
+	for (int32 x = 0; x < Width; x++)
 	{
-		for (int j = 0; j < Height; j++)
+		for (int32 y = 0; y < Height; y++)
 		{
-			if (i == 0 || i == 2 || i == 4)
+			if (x == 0 || x == 2 || x == 4)
 			{
 				auto randNum = FMath::RandRange(0, ArrColorsSize-1);
 	
@@ -39,21 +54,29 @@ void ADesk::BeginPlay()
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
 				if (randNum >= PlateColorsArr.Num())
 				{ 
-					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), i);
+					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
 					return; 
 				}
 				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
 				PlateColorsArr.RemoveAt(randNum);
 				ArrColorsSize--;
-				NewPlate->RefreshColor();			
+				NewPlate->RefreshColor();	
+				NewPlate->SetPlacement(x, y);
+				//TODO check normal initialization of two dimensional array
+				Board[x][y] = 1;
 			}
-			else if (j == 0 || j == 2 || j == 4)
+			else if (y == 0 || y == 2 || y == 4)
 			{
 				ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
+				Board[x][y] = 1;
+			}
+			else
+			{
+				Board[x][y] = 0;
 			}
 			NewLocation += FVector(200.f, 0.f, 0.f);
 		}
-		NewLocation = StartLocation + FVector(0.f, 200.f, 0.f)*(i+1);
+		NewLocation = StartLocation + FVector(0.f, 200.f, 0.f)*(x+1);
 	}
 	
 

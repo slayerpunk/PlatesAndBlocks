@@ -7,6 +7,7 @@
 #include "PlateController.generated.h"
 
 class APlate;
+class ADesk;
 /**
  * 
  */
@@ -33,11 +34,12 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetControlledPlate(APlate* platePawn);
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void SetDesk(ADesk* Desk);
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	
 	APlate* ControlledPlate = nullptr;
-
+	ADesk* Desk = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 ShiftMultiply = 200;
 

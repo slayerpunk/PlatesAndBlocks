@@ -14,6 +14,12 @@ enum class EPlateColor : uint8
 	Red
 };
 
+struct PlatePosition
+{
+	int32 x;
+	int32 y;
+};
+
 UCLASS()
 class PLATESANDBLOCKS_API APlate : public APawn
 {
@@ -23,6 +29,8 @@ public:
 	// Sets default values for this pawn's properties
 	APlate();
 	void SetPlateColor(EPlateColor Color);
+	void SetPlacement(int32 x, int32 y);
+	PlatePosition GetPlacement();
 
  	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
  	void RefreshColor();
@@ -46,4 +54,6 @@ public:
 	void MoveLeft();
 	void MoveRight();
 
+private:
+	PlatePosition PlatePos;
 };
