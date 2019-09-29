@@ -39,5 +39,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<ABlock> Block_Blueprint;
 
+	static const int32 Width = 5;
+	static const int32 Height = 5;
+	TArray<int32> Board[Width][Height];
+
 	TArray<EPlateColor> PlateColorsArr;
 };

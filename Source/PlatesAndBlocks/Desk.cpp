@@ -27,9 +27,9 @@ void ADesk::BeginPlay()
 	//Make a location for the new actor to spawn at (300 units above this actor)  
 	FVector StartLocation = GetActorLocation() + FVector(0.f, 0.f, 16.f);
 	FVector NewLocation = StartLocation;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < Width; i++)
 	{
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < Height; j++)
 		{
 			if (i == 0 || i == 2 || i == 4)
 			{
@@ -39,7 +39,7 @@ void ADesk::BeginPlay()
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
 				if (randNum >= PlateColorsArr.Num())
 				{ 
-					UE_LOG(LogTemp, Warning, TEXT("Leave with failure %i:"), i);
+					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), i);
 					return; 
 				}
 				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
