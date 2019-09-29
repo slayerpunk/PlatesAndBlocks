@@ -2,9 +2,11 @@
 
 #pragma once
 
+#include "Plate.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Desk.generated.h"
+
 
 class APlate;
 class ABlock;
@@ -28,10 +30,14 @@ public:
 
 
 private:
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 QtyEachColorPlates = 5;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<APlate> Plate_Blueprint;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<ABlock> Block_Blueprint;
+
+	TArray<EPlateColor> PlateColorsArr;
 };

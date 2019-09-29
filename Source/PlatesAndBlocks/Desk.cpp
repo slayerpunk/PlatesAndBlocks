@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Desk.h"
-#include "Plate.h"
 #include "Block.h"
+#include "Math\RandomStream.h"
 
 // Sets default values
 ADesk::ADesk()
@@ -16,28 +16,45 @@ ADesk::ADesk()
 void ADesk::BeginPlay()
 {
 	Super::BeginPlay();
-
+	for (int i =0; i < QtyEachColorPlates; i++)
+	{
+		PlateColorsArr.Add(EPlateColor::Blue);
+ 		PlateColorsArr.Add(EPlateColor::Yellow);
+ 		PlateColorsArr.Add(EPlateColor::Red);		
+	}
+	int32 ArrColorsSize = PlateColorsArr.Num();
+	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
 	//Make a location for the new actor to spawn at (300 units above this actor)  
-		FVector StartLocation = GetActorLocation() + FVector(0.f, 0.f, 15.f);
-		FVector NewLocation = StartLocation;
-		for (int i = 0; i < 5; i++)
+	FVector StartLocation = GetActorLocation() + FVector(0.f, 0.f, 16.f);
+	FVector NewLocation = StartLocation;
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
 		{
-			for (int j = 0; j < 5; j++)
+			if (i == 0 || i == 2 || i == 4)
 			{
-				if (i == 0 || i == 2 || i == 4)
-				{
-					APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
-					
+				auto randNum = FMath::RandRange(0, ArrColorsSize-1);
+	
+				UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
+				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
+				if (randNum >= PlateColorsArr.Num())
+				{ 
+					UE_LOG(LogTemp, Warning, TEXT("Leave with failure %i:"), i);
+					return; 
 				}
-				else if (j == 0 || j == 2 || j == 4)
-				{
-					ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
-				}
-				NewLocation += FVector(200.f, 0.f, 0.f);
-
+				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
+				PlateColorsArr.RemoveAt(randNum);
+				ArrColorsSize--;
+				NewPlate->RefreshColor();			
 			}
-			NewLocation = StartLocation + FVector(0.f, 200.f, 0.f)*(i+1);
+			else if (j == 0 || j == 2 || j == 4)
+			{
+				ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
+			}
+			NewLocation += FVector(200.f, 0.f, 0.f);
 		}
+		NewLocation = StartLocation + FVector(0.f, 200.f, 0.f)*(i+1);
+	}
 	
 
 }

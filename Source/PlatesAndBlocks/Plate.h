@@ -24,14 +24,15 @@ public:
 	APlate();
 	void SetPlateColor(EPlateColor Color);
 
-	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EPlateColor PlateColor = EPlateColor::Blue;
+ 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+ 	void RefreshColor();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EPlateColor PlateColor = EPlateColor::Red;
 
 public:	
 	// Called every frame

@@ -16,6 +16,11 @@ void APlate::SetPlateColor(EPlateColor Color)
 	PlateColor = Color;
 }
 
+// void APlate::RefreshColor()
+// {
+// 	return;
+// }
+
 // Called when the game starts or when spawned
 void APlate::BeginPlay()
 {
