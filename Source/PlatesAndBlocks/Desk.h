@@ -20,7 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	ADesk();
 	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
-	void SetBoard(int32 x, int32 y, int32 state);
+	void SetBoard(int32 x, int32 y, AActor* Plate);
+	bool IsGameCompleted();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -42,7 +43,9 @@ private:
 
 	static const int32 Width = 5;
 	static const int32 Height = 5;
-	int32 Board[Width][Height];
+	AActor* Board[Width][Height];
+
+	bool IsPlateSeqCorrect = false;
 
 	TArray<EPlateColor> PlateColorsArr;
 };

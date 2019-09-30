@@ -16,15 +16,48 @@ bool ADesk::IsPlaceFreeAndCorrect(int32 x, int32 y)
 {
 	if ( x >= 0 && x < Width && y >= 0 && y < Height )
 	{
-		if (Board[x][y] == 0)
+		if (Board[x][y] == nullptr)
 			return true;
 	}
 	return false;
 }
 
-void ADesk::SetBoard(int32 x, int32 y, int32 state)
+void ADesk::SetBoard(int32 x, int32 y, AActor* Plate)
 {
-	Board[x][y] = state;
+	Board[x][y] = Plate;
+}
+
+bool ADesk::IsGameCompleted()
+{
+	IsPlateSeqCorrect = false;
+	for (int i = 0; i < Width; i += 2)
+	{
+		EPlateColor PlateColor = EPlateColor::Unknown;
+		for (int j = 0; j < Height; j++)
+		{
+			if (Board[i][j] == nullptr) { return false; }
+			if(PlateColor == EPlateColor::Unknown)
+			{
+				PlateColor = Cast<APlate>(Board[i][j])->GetPlateColor();
+			}
+			else if(PlateColor == Cast<APlate>(Board[i][j])->GetPlateColor())
+			{	
+				IsPlateSeqCorrect = true;
+			}
+			else
+			{
+				IsPlateSeqCorrect = false;
+				break;
+			}
+		}
+		if (!IsPlateSeqCorrect)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Game not completed yet."));
+			return false;
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Game Completed! Congratulation!"));
+	return true;
 }
 
 // Called when the game starts or when spawned
@@ -63,16 +96,16 @@ void ADesk::BeginPlay()
 				NewPlate->RefreshColor();	
 				NewPlate->SetPlacement(x, y);
 				//TODO check normal initialization of two dimensional array
-				Board[x][y] = 1;
+				Board[x][y] = NewPlate;
 			}
 			else if (y == 0 || y == 2 || y == 4)
 			{
 				ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
-				Board[x][y] = 1;
+				Board[x][y] = NewBlock;
 			}
 			else
 			{
-				Board[x][y] = 0;
+				Board[x][y] = nullptr;
 			}
 			NewLocation += FVector(200.f, 0.f, 0.f);
 		}

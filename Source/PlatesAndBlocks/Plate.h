@@ -11,7 +11,8 @@ enum class EPlateColor : uint8
 {
 	Blue,
 	Yellow,
-	Red
+	Red,
+	Unknown
 };
 
 struct PlatePosition
@@ -31,6 +32,8 @@ public:
 	void SetPlateColor(EPlateColor Color);
 	void SetPlacement(int32 x, int32 y);
 	PlatePosition GetPlacement();
+
+	EPlateColor GetPlateColor();
 
  	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
  	void RefreshColor();

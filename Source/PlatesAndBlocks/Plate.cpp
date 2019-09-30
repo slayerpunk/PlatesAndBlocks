@@ -27,6 +27,11 @@ PlatePosition APlate::GetPlacement()
 	return PlatePos;
 }
 
+EPlateColor APlate::GetPlateColor()
+{
+	return PlateColor;
+}
+
 // void APlate::RefreshColor()
 // {
 // 	return;

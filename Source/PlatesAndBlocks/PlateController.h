@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Control")
 	void MovePlateRight();
 
+	UFUNCTION(BlueprintCallable, Category = "Control")
+	bool GetGameState();
+
 protected: 
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
@@ -37,6 +40,7 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetDesk(ADesk* Desk);
 private:
+	
 	
 	APlate* ControlledPlate = nullptr;
 	ADesk* Desk = nullptr;
@@ -47,4 +51,5 @@ private:
 	FVector ShiftDown = { -1.0,0.0,0.0 };
 	FVector ShiftLeft = { 0.0,-1.0,0.0 };
 	FVector ShiftRight = { 0.0,1.0,0.0 };
+	bool IsGameCompleted = true;
 };
