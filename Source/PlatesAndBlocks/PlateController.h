@@ -51,5 +51,5 @@ private:
 	FVector ShiftDown = { -1.0,0.0,0.0 };
 	FVector ShiftLeft = { 0.0,-1.0,0.0 };
 	FVector ShiftRight = { 0.0,1.0,0.0 };
-	bool IsGameCompleted = true;
+	bool IsGameCompleted = false;
 };

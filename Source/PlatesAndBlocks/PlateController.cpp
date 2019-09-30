@@ -75,6 +75,10 @@ void APlateController::MovePlateRight()
 
 bool APlateController::GetGameState()
 {
+	if(IsGameCompleted)
+	{
+		ControlledPlate = nullptr;
+	}
 	return IsGameCompleted;
 }
 
