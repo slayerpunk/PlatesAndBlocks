@@ -10,6 +10,7 @@ APlate::APlate()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	
 }
 
 void APlate::SetPlateColor(EPlateColor Color)
@@ -33,16 +34,14 @@ EPlateColor APlate::GetPlateColor()
 	return PlateColor;
 }
 
-// void APlate::RefreshColor()
-// {
-// 	return;
-// }
-
-// Called when the game starts or when spawned
 void APlate::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	auto GameMode = Cast<APlatesAndBlocksGameModeBase>(GetWorld()->GetAuthGameMode());
+		 	
+	PlateColor = GameMode->GetRandomColor();
+	RefreshColor();
+
 }
 
 // Called every frame
@@ -59,20 +58,4 @@ void APlate::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void APlate::MoveUp()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s: Move Up"), *GetName());
-	
-}
-void APlate::MoveDown()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s: Move Down"), *GetName());
-}
-void APlate::MoveLeft()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s: Move Left"), *GetName());
-}
-void APlate::MoveRight()
-{
-	UE_LOG(LogTemp, Warning, TEXT("%s: Move Right"), *GetName());
-}
+

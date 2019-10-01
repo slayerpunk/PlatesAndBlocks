@@ -14,8 +14,8 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 		PlateColorsArr.Add(EPlateColor::Yellow);
 		PlateColorsArr.Add(EPlateColor::Red);
 	}
-	int32 ArrColorsSize = PlateColorsArr.Num();
-	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
+//	int32 ArrColorsSize = PlateColorsArr.Num();
+//	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
 	//Make a location for the new actor to spawn at (300 units above this actor)  
 
 	ADesk* NewDesk = GetWorld()->SpawnActor<ADesk>(Desk_Blueprint, StartDeskLocation, FRotator::ZeroRotator);
@@ -27,19 +27,19 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 		{
 			if (x == 0 || x == 2 || x == 4)
 			{
-				auto randNum = FMath::RandRange(0, ArrColorsSize - 1);
+	//			auto randNum = FMath::RandRange(0, ArrColorsSize - 1);
 
-				UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
+	//			UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
-				if (randNum >= PlateColorsArr.Num())
-				{
-					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
-					return;
-				}
-				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
-				PlateColorsArr.RemoveAt(randNum);
-				ArrColorsSize--;
-				NewPlate->RefreshColor();
+// 				if (randNum >= PlateColorsArr.Num())
+// 				{
+// 					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
+// 					return;
+// 				}
+//				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
+	//			PlateColorsArr.RemoveAt(randNum);
+		//		ArrColorsSize--;
+		//		NewPlate->RefreshColor();
 				NewPlate->SetPlacement(x, y);
 				//TODO check normal initialization of two dimensional array
 				Board[x][y] = NewPlate;
@@ -91,6 +91,26 @@ bool APlatesAndBlocksGameModeBase::IsGameCompleted()
 	UE_LOG(LogTemp, Warning, TEXT("Game Completed! Congratulation!"));
 	return true;
 }
+
+EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
+{
+	int32 ArrColorsSize = PlateColorsArr.Num();
+	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
+
+	auto randNum = FMath::RandRange(0, ArrColorsSize - 1);
+	UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
+	
+	if (randNum >= PlateColorsArr.Num())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
+		return EPlateColor::Unknown;
+	}
+	auto RetColor = PlateColorsArr[randNum];
+	PlateColorsArr.RemoveAt(randNum);
+
+	return RetColor;
+}
+
 
 void APlatesAndBlocksGameModeBase::SetBoard(int32 x, int32 y, AActor* Plate)
 {

@@ -39,9 +39,7 @@ public:
  	void RefreshColor();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EPlateColor PlateColor = EPlateColor::Red;
 
@@ -51,12 +49,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void MoveUp();
-	void MoveDown();
-	void MoveLeft();
-	void MoveRight();
-
+	
 private:
 	PlatePosition PlatePos;
 };

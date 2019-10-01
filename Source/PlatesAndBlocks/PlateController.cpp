@@ -26,7 +26,6 @@ void APlateController::MovePlateUp()
 		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
 		GameMode->SetBoard(PlatePos.x, PlatePos.y+1, ControlledPlate);
 		ControlledPlate->SetPlacement(PlatePos.x, PlatePos.y + 1);
-		ControlledPlate->MoveUp();
 		auto PlateLocation = ControlledPlate->GetActorLocation();
 		ControlledPlate->SetActorLocation(PlateLocation + ShiftUp*ShiftMultiply);
 		IsGameCompleted = GameMode->IsGameCompleted();
@@ -43,7 +42,6 @@ void APlateController::MovePlateDown()
 		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
 		GameMode->SetBoard(PlatePos.x, PlatePos.y - 1, ControlledPlate);
 		ControlledPlate->SetPlacement(PlatePos.x, PlatePos.y - 1);
-		ControlledPlate->MoveDown();
 		auto PlateLocation = ControlledPlate->GetActorLocation();
 		ControlledPlate->SetActorLocation(PlateLocation + ShiftDown*ShiftMultiply);
 		IsGameCompleted = GameMode->IsGameCompleted();
@@ -60,7 +58,6 @@ void APlateController::MovePlateLeft()
 		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
 		GameMode->SetBoard(PlatePos.x - 1, PlatePos.y, ControlledPlate);
 		ControlledPlate->SetPlacement(PlatePos.x - 1, PlatePos.y);
-		ControlledPlate->MoveLeft();
 		auto PlateLocation = ControlledPlate->GetActorLocation();
 		ControlledPlate->SetActorLocation(PlateLocation + ShiftLeft*ShiftMultiply);
 		IsGameCompleted = GameMode->IsGameCompleted();
@@ -77,7 +74,6 @@ void APlateController::MovePlateRight()
 		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
 		GameMode->SetBoard(PlatePos.x+1, PlatePos.y, ControlledPlate);
 		ControlledPlate->SetPlacement(PlatePos.x+1, PlatePos.y);
-		ControlledPlate->MoveRight();
 		auto PlateLocation = ControlledPlate->GetActorLocation();
 		ControlledPlate->SetActorLocation(PlateLocation + ShiftRight*ShiftMultiply);
 		IsGameCompleted = GameMode->IsGameCompleted();

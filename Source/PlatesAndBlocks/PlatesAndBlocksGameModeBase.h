@@ -25,7 +25,7 @@ public:
 	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
 	void SetBoard(int32 x, int32 y, AActor* Plate);
 	bool IsGameCompleted();
-
+	EPlateColor GetRandomColor();
 protected:
 	virtual void BeginPlay() override;
 
