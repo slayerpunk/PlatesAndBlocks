@@ -19,9 +19,9 @@ class PLATESANDBLOCKS_API ADesk : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADesk();
-	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
-	void SetBoard(int32 x, int32 y, AActor* Plate);
-	bool IsGameCompleted();
+// 	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
+// 	void SetBoard(int32 x, int32 y, AActor* Plate);
+// 	bool IsGameCompleted();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

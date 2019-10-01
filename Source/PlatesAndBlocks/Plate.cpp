@@ -2,6 +2,7 @@
 
 
 #include "Plate.h"
+#include "PlatesAndBlocksGameModeBase.h"
 
 // Sets default values
 APlate::APlate()

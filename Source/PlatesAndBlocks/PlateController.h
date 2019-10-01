@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PlateController.generated.h"
 
+class APlatesAndBlocksGameModeBase;
 class APlate;
 class ADesk;
 /**
@@ -35,13 +36,15 @@ public:
 
 protected: 
 
+	virtual void BeginPlay() override;
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetControlledPlate(APlate* platePawn);
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetDesk(ADesk* Desk);
 private:
 	
-	
+	APlatesAndBlocksGameModeBase* GameMode = nullptr;
 	APlate* ControlledPlate = nullptr;
 	ADesk* Desk = nullptr;
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
