@@ -62,7 +62,7 @@ void APlate::Move(FVector Shift, int32 add_x, int32 add_y)
 		PlatePos.y += add_y;
 		
 		SetActorLocation(GetActorLocation() + Shift*ShiftMultiply);
-		
+		GameMode->CheckGameCompletion();
 	}
 }
 

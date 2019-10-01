@@ -31,15 +31,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Control")
 	void MovePlateRight();		//Method calling from Binding Action in Game then call move method at ControlledPlate if it is exist
 
-	UFUNCTION(BlueprintCallable, Category = "Control")
-	bool GetGameState();
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void SetControlledPlate(APlate* platePawn);
 
 protected: 
 
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Setup")
-	void SetControlledPlate(APlate* platePawn);
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetDesk(ADesk* Desk);
 private:

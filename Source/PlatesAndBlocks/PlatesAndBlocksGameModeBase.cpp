@@ -3,6 +3,7 @@
 
 #include "PlatesAndBlocksGameModeBase.h"
 #include "Block.h"
+#include "PlateController.h"
 #include "Desk.h"
 
 void APlatesAndBlocksGameModeBase::BeginPlay()
@@ -48,15 +49,20 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 	}
 }
 
-bool APlatesAndBlocksGameModeBase::IsGameCompleted()
+void APlatesAndBlocksGameModeBase::CheckGameCompletion()
 {
+	//TODO Something nice
 	IsPlateSeqCorrect = false;
 	for (int i = 0; i < Width; i += 2)
 	{
 		EPlateColor PlateColor = EPlateColor::Unknown;
 		for (int j = 0; j < Height; j++)
 		{
-			if (Board[i][j] == nullptr) { return false; }
+			if (Board[i][j] == nullptr)
+			{ 
+				IsPlateSeqCorrect = false;
+				break; 
+			}
 			if (PlateColor == EPlateColor::Unknown)
 			{
 				PlateColor = Cast<APlate>(Board[i][j])->GetPlateColor();
@@ -74,11 +80,14 @@ bool APlatesAndBlocksGameModeBase::IsGameCompleted()
 		if (!IsPlateSeqCorrect)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Game not completed yet."));
-			return false;
+			break;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Game Completed! Congratulation!"));
-	return true;
+	if (IsPlateSeqCorrect)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Game Completed! Congratulation!"));
+		IsGameCompleted = true;
+	}
 }
 
 EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
@@ -114,4 +123,13 @@ bool APlatesAndBlocksGameModeBase::IsPlaceFreeAndCorrect(int32 x, int32 y)
 			return true;
 	}
 	return false;
+}
+
+bool APlatesAndBlocksGameModeBase::GetGameState()
+{
+	if (IsGameCompleted)
+	{
+		Cast<APlateController>(GetWorld()->GetFirstPlayerController())->SetControlledPlate(nullptr);
+	}
+	return IsGameCompleted;
 }

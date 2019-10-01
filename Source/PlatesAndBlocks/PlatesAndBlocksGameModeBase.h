@@ -24,8 +24,12 @@ public:
 	
 	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
 	void SetBoard(int32 x, int32 y, AActor* Plate);
-	bool IsGameCompleted();
+	void CheckGameCompletion();
 	EPlateColor GetRandomColor(); //Return to Plate Random color from PlateColorsArr for randomization our game and after that erase it from array
+
+
+	UFUNCTION(BlueprintCallable, Category = "Control")
+	bool GetGameState();
 protected:
 	virtual void BeginPlay() override;
 
@@ -52,6 +56,6 @@ private:
 	AActor* Board[Width][Height];
 
 	bool IsPlateSeqCorrect = false;
-
+	bool IsGameCompleted = false;
 	TArray<EPlateColor> PlateColorsArr;
 };

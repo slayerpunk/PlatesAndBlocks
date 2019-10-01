@@ -39,14 +39,6 @@ void APlateController::MovePlateRight()
 	ControlledPlate->Move(ShiftRight, 1, 0);
 }
 
-bool APlateController::GetGameState()
-{
-	if(IsGameCompleted)
-	{
-		ControlledPlate = nullptr;
-	}
-	return IsGameCompleted;
-}
 
 void APlateController::SetControlledPlate(APlate* platePawn)
 {
