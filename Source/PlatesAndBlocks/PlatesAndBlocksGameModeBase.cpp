@@ -3,6 +3,7 @@
 
 #include "PlatesAndBlocksGameModeBase.h"
 #include "Block.h"
+#include "Desk.h"
 
 void APlatesAndBlocksGameModeBase::BeginPlay()
 {
@@ -16,8 +17,10 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 	int32 ArrColorsSize = PlateColorsArr.Num();
 	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
 	//Make a location for the new actor to spawn at (300 units above this actor)  
-	FVector StartLocation = FVector(0.f, 0.f, 40.f);
-	FVector NewLocation = StartLocation;
+
+	ADesk* NewDesk = GetWorld()->SpawnActor<ADesk>(Desk_Blueprint, StartDeskLocation, FRotator::ZeroRotator);
+
+	FVector NewLocation = StartPlateLocation;
 	for (int32 x = 0; x < Width; x++)
 	{
 		for (int32 y = 0; y < Height; y++)
@@ -52,7 +55,7 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 			}
 			NewLocation += FVector(200.f, 0.f, 0.f);
 		}
-		NewLocation = StartLocation + FVector(0.f, 200.f, 0.f)*(x + 1);
+		NewLocation = StartPlateLocation + FVector(0.f, 200.f, 0.f)*(x + 1);
 	}
 }
 

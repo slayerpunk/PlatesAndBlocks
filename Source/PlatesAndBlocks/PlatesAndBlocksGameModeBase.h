@@ -9,6 +9,7 @@
 
 class APlate;
 class ABlock;
+class ADesk;
 
 /**
  * 
@@ -37,6 +38,14 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<ABlock> Block_Blueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	TSubclassOf<ADesk> Desk_Blueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	FVector StartDeskLocation = FVector(0.f, 0.f, 15.f);
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	FVector StartPlateLocation = FVector(0.f, 0.f, 40.f);
 
 	static const int32 Width = 5;
 	static const int32 Height = 5;
