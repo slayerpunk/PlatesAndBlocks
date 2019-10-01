@@ -23,13 +23,13 @@ public:
 	APlate* GetControlledPlate();
 
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void MovePlateUp();
+	void MovePlateUp();			//Method calling from Binding Action in Game then call move method at ControlledPlate if it is exist
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void MovePlateDown();
+	void MovePlateDown();		//Method calling from Binding Action in Game then call move method at ControlledPlate if it is exist
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void MovePlateLeft();
+	void MovePlateLeft();		//Method calling from Binding Action in Game then call move method at ControlledPlate if it is exist
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	void MovePlateRight();
+	void MovePlateRight();		//Method calling from Binding Action in Game then call move method at ControlledPlate if it is exist
 
 	UFUNCTION(BlueprintCallable, Category = "Control")
 	bool GetGameState();

@@ -25,7 +25,7 @@ public:
 	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
 	void SetBoard(int32 x, int32 y, AActor* Plate);
 	bool IsGameCompleted();
-	EPlateColor GetRandomColor();
+	EPlateColor GetRandomColor(); //Return to Plate Random color from PlateColorsArr for randomization our game and after that erase it from array
 protected:
 	virtual void BeginPlay() override;
 

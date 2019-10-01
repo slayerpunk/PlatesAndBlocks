@@ -16,68 +16,27 @@ void APlateController::BeginPlay()
 	
 }
 void APlateController::MovePlateUp()
-{
-	
+{	
 	if (!ensure(ControlledPlate)) { return; }
-	PlatePosition PlatePos = ControlledPlate->GetPlacement();
-	
-	if(GameMode->IsPlaceFreeAndCorrect(PlatePos.x, PlatePos.y+1))
-	{
-		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->SetBoard(PlatePos.x, PlatePos.y+1, ControlledPlate);
-		ControlledPlate->SetPlacement(PlatePos.x, PlatePos.y + 1);
-		auto PlateLocation = ControlledPlate->GetActorLocation();
-		ControlledPlate->SetActorLocation(PlateLocation + ShiftUp*ShiftMultiply);
-		IsGameCompleted = GameMode->IsGameCompleted();
-	}
+	ControlledPlate->Move(ShiftUp, 0, 1);
 }
 
 void APlateController::MovePlateDown()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	PlatePosition PlatePos = ControlledPlate->GetPlacement();
-
-	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x, PlatePos.y - 1))
-	{
-		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->SetBoard(PlatePos.x, PlatePos.y - 1, ControlledPlate);
-		ControlledPlate->SetPlacement(PlatePos.x, PlatePos.y - 1);
-		auto PlateLocation = ControlledPlate->GetActorLocation();
-		ControlledPlate->SetActorLocation(PlateLocation + ShiftDown*ShiftMultiply);
-		IsGameCompleted = GameMode->IsGameCompleted();
-	}
+	ControlledPlate->Move(ShiftDown, 0, -1);
 }
 
 void APlateController::MovePlateLeft()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	PlatePosition PlatePos = ControlledPlate->GetPlacement();
-
-	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x -1, PlatePos.y))
-	{
-		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->SetBoard(PlatePos.x - 1, PlatePos.y, ControlledPlate);
-		ControlledPlate->SetPlacement(PlatePos.x - 1, PlatePos.y);
-		auto PlateLocation = ControlledPlate->GetActorLocation();
-		ControlledPlate->SetActorLocation(PlateLocation + ShiftLeft*ShiftMultiply);
-		IsGameCompleted = GameMode->IsGameCompleted();
-	}
+	ControlledPlate->Move(ShiftLeft, -1, 0);
 }
 
 void APlateController::MovePlateRight()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	PlatePosition PlatePos = ControlledPlate->GetPlacement();
-
-	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + 1, PlatePos.y))
-	{
-		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->SetBoard(PlatePos.x+1, PlatePos.y, ControlledPlate);
-		ControlledPlate->SetPlacement(PlatePos.x+1, PlatePos.y);
-		auto PlateLocation = ControlledPlate->GetActorLocation();
-		ControlledPlate->SetActorLocation(PlateLocation + ShiftRight*ShiftMultiply);
-		IsGameCompleted = GameMode->IsGameCompleted();
-	}
+	ControlledPlate->Move(ShiftRight, 1, 0);
 }
 
 bool APlateController::GetGameState()

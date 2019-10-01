@@ -27,21 +27,10 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 		{
 			if (x == 0 || x == 2 || x == 4)
 			{
-	//			auto randNum = FMath::RandRange(0, ArrColorsSize - 1);
 
-	//			UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
-// 				if (randNum >= PlateColorsArr.Num())
-// 				{
-// 					UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
-// 					return;
-// 				}
-//				NewPlate->SetPlateColor(PlateColorsArr[randNum]);
-	//			PlateColorsArr.RemoveAt(randNum);
-		//		ArrColorsSize--;
-		//		NewPlate->RefreshColor();
+
 				NewPlate->SetPlacement(x, y);
-				//TODO check normal initialization of two dimensional array
 				Board[x][y] = NewPlate;
 			}
 			else if (y == 0 || y == 2 || y == 4)

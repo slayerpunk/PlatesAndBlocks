@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "Plate.generated.h"
 
+class APlatesAndBlocksGameModeBase;
+
 UENUM()
 enum class EPlateColor : uint8
 {
@@ -29,11 +31,10 @@ class PLATESANDBLOCKS_API APlate : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlate();
-	void SetPlateColor(EPlateColor Color);
 	void SetPlacement(int32 x, int32 y);
-	PlatePosition GetPlacement();
 
-	EPlateColor GetPlateColor();
+	PlatePosition GetPlacement(); //Return Plate Location on the board
+	EPlateColor GetPlateColor(); //Return Plate Color
 
  	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
  	void RefreshColor();
@@ -50,6 +51,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	void Move(FVector Shift, int32 add_x, int32 add_y);
 private:
+	
+	APlatesAndBlocksGameModeBase* GameMode;
 	PlatePosition PlatePos;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 ShiftMultiply = 200;
 };
