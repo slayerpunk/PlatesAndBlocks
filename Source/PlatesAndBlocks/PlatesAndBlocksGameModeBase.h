@@ -63,6 +63,5 @@ private:
 
 	AActor*** BoardActorsArray;
 
-	bool IsPlateSeqCorrect = false;
 	TArray<EPlateColor> PlateColorsArr;
 };

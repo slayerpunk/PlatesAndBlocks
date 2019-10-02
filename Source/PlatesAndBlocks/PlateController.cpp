@@ -11,10 +11,19 @@
 void APlateController::BeginPlay()
 {
 	Super::BeginPlay();
-	GameMode = Cast<APlatesAndBlocksGameModeBase>(GetWorld()->GetAuthGameMode());
-
-	
+	GameMode = Cast<APlatesAndBlocksGameModeBase>(GetWorld()->GetAuthGameMode());	
 }
+
+void APlateController::SetControlledPlate(APlate* platePawn)
+{
+	ControlledPlate = platePawn;
+}
+
+APlate* APlateController::GetControlledPlate()
+{
+	return ControlledPlate;
+}
+
 void APlateController::MovePlateUp()
 {	
 	if (!ensure(ControlledPlate)) { return; }
@@ -40,17 +49,5 @@ void APlateController::MovePlateRight()
 }
 
 
-void APlateController::SetControlledPlate(APlate* platePawn)
-{
-	ControlledPlate = platePawn;
-}
 
-void APlateController::SetDesk(ADesk * Desk_BP)
-{
-	Desk = Desk_BP;
-}
 
-APlate* APlateController::GetControlledPlate()
-{
-	return ControlledPlate;
-}
