@@ -21,15 +21,21 @@ class PLATESANDBLOCKS_API APlatesAndBlocksGameModeBase : public AGameModeBase
 
 public:
 	// Sets default values for this actor's properties
-	
-	bool IsPlaceFreeAndCorrect(int32 x, int32 y);
-	void SetBoard(int32 x, int32 y, AActor* Plate);
-	void CheckGameCompletion();
-	EPlateColor GetRandomColor(); //Return to Plate Random color from PlateColorsArr for randomization our game and after that erase it from array
+	APlatesAndBlocksGameModeBase();
 
+	//Check is Place free for plate move and exist in array
+	bool IsPlaceFreeAndCorrect(int32 x, int32 y); 
 
+	//Method for refresh BoardActorsArray after change position of figures on the board
+	void UpdateBoardActorsArray(int32 x, int32 y, AActor* Actor); 
+
+	//Method calling every plate move to check columns
 	UFUNCTION(BlueprintCallable, Category = "Control")
-	bool GetGameState();
+	bool CheckGameCompletion(); 
+
+	//Return to Plate Random color from PlateColorsArr for randomization our game and after that erase it from array
+	EPlateColor GetRandomColor(); 
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -50,12 +56,13 @@ private:
 	FVector StartDeskLocation = FVector(0.f, 0.f, 15.f);
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	FVector StartPlateLocation = FVector(0.f, 0.f, 40.f);
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 Width = 5;
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	int32 Height = 5;
 
-	static const int32 Width = 5;
-	static const int32 Height = 5;
-	AActor* Board[Width][Height];
+	AActor*** BoardActorsArray;
 
 	bool IsPlateSeqCorrect = false;
-	bool IsGameCompleted = false;
 	TArray<EPlateColor> PlateColorsArr;
 };

@@ -56,8 +56,8 @@ void APlate::Move(FVector Shift, int32 add_x, int32 add_y)
 {
 	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + add_x, PlatePos.y + add_y))
 	{
-		GameMode->SetBoard(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->SetBoard(PlatePos.x + add_x, PlatePos.y + +add_y, this);
+		GameMode->UpdateBoardActorsArray(PlatePos.x, PlatePos.y, nullptr);
+		GameMode->UpdateBoardActorsArray(PlatePos.x + add_x, PlatePos.y + +add_y, this);
 		PlatePos.x += add_x;
 		PlatePos.y += add_y;
 		

@@ -5,43 +5,67 @@
 #include "Block.h"
 #include "PlateController.h"
 #include "Desk.h"
-
+APlatesAndBlocksGameModeBase::APlatesAndBlocksGameModeBase()
+{
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+		
+	BoardActorsArray = new AActor**[Height]; 
+	for (int count = 0; count < Height; count++)
+	{
+		BoardActorsArray[count] = new AActor*[Width];
+	}
+					
+}
 void APlatesAndBlocksGameModeBase::BeginPlay()
 {
-	Super::BeginPlay();
+	//Initialize Color array
+		Super::BeginPlay();
 	for (int i = 0; i < QtyEachColorPlates; i++)
 	{
 		PlateColorsArr.Add(EPlateColor::Blue);
 		PlateColorsArr.Add(EPlateColor::Yellow);
 		PlateColorsArr.Add(EPlateColor::Red);
 	}
-//	int32 ArrColorsSize = PlateColorsArr.Num();
-//	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
-	//Make a location for the new actor to spawn at (300 units above this actor)  
 
-	ADesk* NewDesk = GetWorld()->SpawnActor<ADesk>(Desk_Blueprint, StartDeskLocation, FRotator::ZeroRotator);
+	//Reset Board Actors Array Every Start or Repeat Game
+	if (!ensure(BoardActorsArray)) { return; }
+	for (int32 x = 0; x < Width; x++)
+	{
+		for (int32 y = 0; y < Height; y++)
+		{
+			BoardActorsArray[x][y] = nullptr;
+		}
+	}
+
+	//At First Spawn Game Desk
+	//After that begin spawn plates and block 
+	//Plates Spawning at every even or zero column (start from 0)
+	//Blocks Spawning at odd columns and only at even or 0 rows (start from 0)
+	//A new plate at begin play calling GetRandomColor Method to colorize the plate 
+	//After spawn a new plate or block copy pointer to BoardActorsArray
+
+ 	ADesk* NewDesk = GetWorld()->SpawnActor<ADesk>(Desk_Blueprint, StartDeskLocation, FRotator::ZeroRotator);
 
 	FVector NewLocation = StartPlateLocation;
 	for (int32 x = 0; x < Width; x++)
 	{
 		for (int32 y = 0; y < Height; y++)
 		{
-			if (x == 0 || x == 2 || x == 4)
+			if (x % 2 == 0)
 			{
-
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
-
 				NewPlate->SetPlacement(x, y);
-				Board[x][y] = NewPlate;
+				BoardActorsArray[x][y] = NewPlate;
 			}
-			else if (y == 0 || y == 2 || y == 4)
+			else if (y % 2 == 0 )
 			{
 				ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
-				Board[x][y] = NewBlock;
+				BoardActorsArray[x][y] = NewBlock;
 			}
 			else
 			{
-				Board[x][y] = nullptr;
+				BoardActorsArray[x][y] = nullptr;
 			}
 			NewLocation += FVector(200.f, 0.f, 0.f);
 		}
@@ -49,45 +73,29 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 	}
 }
 
-void APlatesAndBlocksGameModeBase::CheckGameCompletion()
+bool APlatesAndBlocksGameModeBase::CheckGameCompletion()
 {
-	//TODO Something nice
-	IsPlateSeqCorrect = false;
-	for (int i = 0; i < Width; i += 2)
+	for (int i = 0; i < Width; i += 2) //Check only even or zero column
 	{
 		EPlateColor PlateColor = EPlateColor::Unknown;
 		for (int j = 0; j < Height; j++)
 		{
-			if (Board[i][j] == nullptr)
+			if (BoardActorsArray[i][j] == nullptr)
 			{ 
-				IsPlateSeqCorrect = false;
-				break; 
+				return false;
 			}
 			if (PlateColor == EPlateColor::Unknown)
 			{
-				PlateColor = Cast<APlate>(Board[i][j])->GetPlateColor();
+				PlateColor = Cast<APlate>(BoardActorsArray[i][j])->GetPlateColor();
 			}
-			else if (PlateColor == Cast<APlate>(Board[i][j])->GetPlateColor())
+			else if (PlateColor != Cast<APlate>(BoardActorsArray[i][j])->GetPlateColor())
 			{
-				IsPlateSeqCorrect = true;
-			}
-			else
-			{
-				IsPlateSeqCorrect = false;
-				break;
+				return false;
 			}
 		}
-		if (!IsPlateSeqCorrect)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Game not completed yet."));
-			break;
-		}
 	}
-	if (IsPlateSeqCorrect)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Game Completed! Congratulation!"));
-		IsGameCompleted = true;
-	}
+	Cast<APlateController>(GetWorld()->GetFirstPlayerController())->SetControlledPlate(nullptr);
+	return true;	
 }
 
 EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
@@ -110,26 +118,18 @@ EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
 }
 
 
-void APlatesAndBlocksGameModeBase::SetBoard(int32 x, int32 y, AActor* Plate)
+void APlatesAndBlocksGameModeBase::UpdateBoardActorsArray(int32 x, int32 y, AActor* Actor)
 {
-	Board[x][y] = Plate;
+	BoardActorsArray[x][y] = Actor;
 }
 
 bool APlatesAndBlocksGameModeBase::IsPlaceFreeAndCorrect(int32 x, int32 y)
 {
 	if (x >= 0 && x < Width && y >= 0 && y < Height)
 	{
-		if (Board[x][y] == nullptr)
+		if (BoardActorsArray[x][y] == nullptr)
 			return true;
 	}
 	return false;
 }
 
-bool APlatesAndBlocksGameModeBase::GetGameState()
-{
-	if (IsGameCompleted)
-	{
-		Cast<APlateController>(GetWorld()->GetFirstPlayerController())->SetControlledPlate(nullptr);
-	}
-	return IsGameCompleted;
-}
