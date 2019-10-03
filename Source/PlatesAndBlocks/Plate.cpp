@@ -57,15 +57,18 @@ Check BoardActorsArray for
 After that refresh all data and change location on screen
 
 */
-void APlate::Move(FVector Shift, int32 add_x, int32 add_y)
+void APlate::Move(FVector Shift)
 {
-	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + add_x, PlatePos.y + add_y))
+	Shift.GetSafeNormal(1.0);
+	int32 x = -Shift.X; // minus because x vector on the screen and in BoardActorsArray is the opposite directions
+	int32 y = Shift.Y;
+	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + x, PlatePos.y + y))
 	{
 		GameMode->UpdateBoardActorsArray(PlatePos.x, PlatePos.y, nullptr);
-		GameMode->UpdateBoardActorsArray(PlatePos.x + add_x, PlatePos.y + +add_y, this);
-		PlatePos.x += add_x;
-		PlatePos.y += add_y;
-		
+		GameMode->UpdateBoardActorsArray(PlatePos.x + x, PlatePos.y + y, this);
+		PlatePos.x += x;
+		PlatePos.y += y;
+		UE_LOG(LogTemp, Warning, TEXT("x = %i, y = %i"), PlatePos.x, PlatePos.y);
 		SetActorLocation(GetActorLocation() + Shift*ShiftMultiply);
 
 	}

@@ -27,25 +27,25 @@ APlate* APlateController::GetControlledPlate()
 void APlateController::MovePlateUp()
 {	
 	if (!ensure(ControlledPlate)) { return; }
-	ControlledPlate->Move(ShiftUp, 0, 1);
+	ControlledPlate->Move(ShiftUp);
 }
 
 void APlateController::MovePlateDown()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	ControlledPlate->Move(ShiftDown, 0, -1);
+	ControlledPlate->Move(ShiftDown);
 }
 
 void APlateController::MovePlateLeft()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	ControlledPlate->Move(ShiftLeft, -1, 0);
+	ControlledPlate->Move(ShiftLeft);
 }
 
 void APlateController::MovePlateRight()
 {
 	if (!ensure(ControlledPlate)) { return; }
-	ControlledPlate->Move(ShiftRight, 1, 0);
+	ControlledPlate->Move(ShiftRight);
 }
 
 

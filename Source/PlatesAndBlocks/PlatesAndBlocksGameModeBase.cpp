@@ -34,7 +34,7 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 	{
 		for (int32 y = 0; y < Height; y++)
 		{
-			BoardActorsArray[x][y] = nullptr;
+			BoardActorsArray[y][x] = nullptr;
 		}
 	}
 
@@ -55,19 +55,19 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 			if (x % 2 == 0)
 			{
 				APlate* NewPlate = GetWorld()->SpawnActor<APlate>(Plate_Blueprint, NewLocation, FRotator::ZeroRotator);
-				NewPlate->SetPlacement(x, y);
-				BoardActorsArray[x][y] = NewPlate;
+				NewPlate->SetPlacement(y, x);
+				BoardActorsArray[y][x] = NewPlate;
 			}
 			else if (y % 2 == 0 )
 			{
 				ABlock* NewBlock = GetWorld()->SpawnActor<ABlock>(Block_Blueprint, NewLocation, FRotator::ZeroRotator);
-				BoardActorsArray[x][y] = NewBlock;
+				BoardActorsArray[y][x] = NewBlock;
 			}
 			else
 			{
-				BoardActorsArray[x][y] = nullptr;
+				BoardActorsArray[y][x] = nullptr;
 			}
-			NewLocation += FVector(200.f, 0.f, 0.f);
+			NewLocation += FVector(-200.f, 0.f, 0.f);
 		}
 		NewLocation = StartPlateLocation + FVector(0.f, 200.f, 0.f)*(x + 1);
 	}
@@ -75,20 +75,20 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 
 bool APlatesAndBlocksGameModeBase::CheckGameCompletion()
 {
-	for (int i = 0; i < Width; i += 2) //Check only even or zero column
+	for (int x = 0; x < Width; x += 2) //Check only even or zero column
 	{
 		EPlateColor PlateColor = EPlateColor::Unknown;
-		for (int j = 0; j < Height; j++)
+		for (int y = 0; y < Height; y++)
 		{
-			if (BoardActorsArray[i][j] == nullptr)
+			if (BoardActorsArray[y][x] == nullptr)
 			{ 
 				return false;
 			}
 			if (PlateColor == EPlateColor::Unknown)
 			{
-				PlateColor = Cast<APlate>(BoardActorsArray[i][j])->GetPlateColor();
+				PlateColor = Cast<APlate>(BoardActorsArray[y][x])->GetPlateColor();
 			}
-			else if (PlateColor != Cast<APlate>(BoardActorsArray[i][j])->GetPlateColor())
+			else if (PlateColor != Cast<APlate>(BoardActorsArray[y][x])->GetPlateColor())
 			{
 				return false;
 			}
@@ -120,14 +120,14 @@ EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
 
 void APlatesAndBlocksGameModeBase::UpdateBoardActorsArray(int32 x, int32 y, AActor* Actor)
 {
-	BoardActorsArray[x][y] = Actor;
+	BoardActorsArray[y][x] = Actor;
 }
 
 bool APlatesAndBlocksGameModeBase::IsPlaceFreeAndCorrect(int32 x, int32 y)
 {
 	if (x >= 0 && x < Width && y >= 0 && y < Height)
 	{
-		if (BoardActorsArray[x][y] == nullptr)
+		if (BoardActorsArray[y][x] == nullptr)
 			return true;
 	}
 	return false;

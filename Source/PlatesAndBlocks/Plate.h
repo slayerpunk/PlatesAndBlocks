@@ -49,7 +49,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//Called by Plate controller on every move input (W,A,S,D)
-	void Move(FVector Shift, int32 add_x, int32 add_y);
+	void Move(FVector Shift);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
