@@ -55,7 +55,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	FVector StartDeskLocation = FVector(0.f, 0.f, 15.f);
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	FVector StartPlateLocation = FVector(0.f, 0.f, 40.f);
+	FVector StartPlateLocation = FVector(800.f, 0.f, 40.f);
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 Width = 5;
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")

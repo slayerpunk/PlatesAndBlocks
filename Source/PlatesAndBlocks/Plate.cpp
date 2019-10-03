@@ -55,13 +55,13 @@ Check BoardActorsArray for
 1) Plate would be in range (width/height) after move
 2) requested place is clear
 After that refresh all data and change location on screen
-
+Shift is vector of requested movement
 */
 void APlate::Move(FVector Shift)
 {
 	Shift.GetSafeNormal(1.0);
-	int32 x = -Shift.X; // minus because x vector on the screen and in BoardActorsArray is the opposite directions
-	int32 y = Shift.Y;
+	int32 x = static_cast<int32>(-Shift.X); // minus because x vector on the screen and in BoardActorsArray is the opposite directions
+	int32 y = static_cast<int32>(Shift.Y);
 	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + x, PlatePos.y + y))
 	{
 		GameMode->UpdateBoardActorsArray(PlatePos.x, PlatePos.y, nullptr);
@@ -70,7 +70,6 @@ void APlate::Move(FVector Shift)
 		PlatePos.y += y;
 		UE_LOG(LogTemp, Warning, TEXT("PLATE: x = %i, y = %i"), PlatePos.x, PlatePos.y);
 		SetActorLocation(GetActorLocation() + Shift*ShiftMultiply);
-
 	}
 }
 

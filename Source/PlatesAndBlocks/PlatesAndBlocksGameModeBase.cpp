@@ -27,7 +27,7 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 		PlateColorsArr.Add(EPlateColor::Yellow);
 		PlateColorsArr.Add(EPlateColor::Red);
 	}
-
+	// X and Y axes according to UE4 project system coordinate
 	//Reset Board Actors Array Every Start or Repeat Game
 	if (!ensure(BoardActorsArray)) { return; }
 	for (int32 y = 0; y < Width; y++)
@@ -67,7 +67,7 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 			{
 				BoardActorsArray[x][y] = nullptr;
 			}
-			NewLocation += FVector(-200.f, 0.f, 0.f);
+			NewLocation += FVector(-200.f, 0.f, 0.f); // minus because x vector on the screen and in BoardActorsArray is the opposite directions
 		}
 		NewLocation = StartPlateLocation + FVector(0.f, 200.f, 0.f)*(y + 1);
 	}
