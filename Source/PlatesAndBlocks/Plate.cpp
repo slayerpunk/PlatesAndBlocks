@@ -68,7 +68,7 @@ void APlate::Move(FVector Shift)
 		GameMode->UpdateBoardActorsArray(PlatePos.x + x, PlatePos.y + y, this);
 		PlatePos.x += x;
 		PlatePos.y += y;
-		UE_LOG(LogTemp, Warning, TEXT("x = %i, y = %i"), PlatePos.x, PlatePos.y);
+		UE_LOG(LogTemp, Warning, TEXT("PLATE: x = %i, y = %i"), PlatePos.x, PlatePos.y);
 		SetActorLocation(GetActorLocation() + Shift*ShiftMultiply);
 
 	}
