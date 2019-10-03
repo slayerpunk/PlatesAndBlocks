@@ -21,9 +21,21 @@ void APlate::BeginPlay()
 	RefreshColor();
 }
 
+// Called to bind functionality to input
+void APlate::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+// Called every frame
+void APlate::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+
 void APlate::SetPlacement(int32 x, int32 y)
 {
-	//TODO Replace Set Method
 	PlatePos.x = x;
 	PlatePos.y = y;
 }
@@ -38,20 +50,13 @@ EPlateColor APlate::GetPlateColor()
 	return PlateColor;
 }
 
-// Called every frame
-void APlate::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+/*
+Check BoardActorsArray for 
+1) Plate would be in range (width/height) after move
+2) requested place is clear
+After that refresh all data and change location on screen
 
-}
-
-// Called to bind functionality to input
-void APlate::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
+*/
 void APlate::Move(FVector Shift, int32 add_x, int32 add_y)
 {
 	if (GameMode->IsPlaceFreeAndCorrect(PlatePos.x + add_x, PlatePos.y + add_y))
@@ -62,7 +67,7 @@ void APlate::Move(FVector Shift, int32 add_x, int32 add_y)
 		PlatePos.y += add_y;
 		
 		SetActorLocation(GetActorLocation() + Shift*ShiftMultiply);
-		GameMode->CheckGameCompletion();
+
 	}
 }
 

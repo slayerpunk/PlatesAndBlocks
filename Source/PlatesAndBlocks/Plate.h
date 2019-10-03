@@ -31,32 +31,44 @@ class PLATESANDBLOCKS_API APlate : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlate();
+
+	//Set start placement after spawn with coordinates of BoardActorsArray
 	void SetPlacement(int32 x, int32 y);
 
-	PlatePosition GetPlacement(); //Return Plate Location on the board
-	EPlateColor GetPlateColor(); //Return Plate Color
+	//Return Plate Location on the board
+	PlatePosition GetPlacement(); 
 
+	//Return Plate Color
+	EPlateColor GetPlateColor(); 
+
+	//Event method begin SetMaterial method at Blueprint
  	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
  	void RefreshColor();
+		
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-protected:
-	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EPlateColor PlateColor = EPlateColor::Red;
+	//Called by Plate controller on every move input (W,A,S,D)
+	void Move(FVector Shift, int32 add_x, int32 add_y);
 
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	void Move(FVector Shift, int32 add_x, int32 add_y);
-private:
-	
+protected:
+
+	virtual void BeginPlay() override;
+
+	//Bounding with material instance at Blueprint
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EPlateColor PlateColor = EPlateColor::Red;
+
+private:	
+
 	APlatesAndBlocksGameModeBase* GameMode;
+
 	PlatePosition PlatePos;
 
+	//Multiply for count shift plate after move, equal to length of the Plate side
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 ShiftMultiply = 200;
 };
