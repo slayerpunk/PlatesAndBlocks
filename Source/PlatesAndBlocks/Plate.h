@@ -2,20 +2,13 @@
 
 #pragma once
 
+#include "PlatesAndBlocksGameModeBase.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Plate.generated.h"
 
 class APlatesAndBlocksGameModeBase;
 
-UENUM()
-enum class EPlateColor : uint8
-{
-	Blue,
-	Yellow,
-	Red,
-	Unknown
-};
 
 struct PlatePosition
 {
@@ -39,7 +32,7 @@ public:
 	PlatePosition GetPlacement(); 
 
 	//Return Plate Color
-	EPlateColor GetPlateColor(); 
+	EActorsColor GetPlateColor(); 
 
 	//Event method begin SetMaterial method at Blueprint
  	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
@@ -60,7 +53,7 @@ protected:
 
 	//Bounding with material instance at Blueprint
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EPlateColor PlateColor = EPlateColor::Red;
+	EActorsColor PlateColor = EActorsColor::Red;
 
 private:	
 

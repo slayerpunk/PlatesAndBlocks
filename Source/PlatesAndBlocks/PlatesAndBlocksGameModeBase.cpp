@@ -5,6 +5,8 @@
 #include "Block.h"
 #include "PlateController.h"
 #include "Desk.h"
+#include "ColumnColor.h"
+
 APlatesAndBlocksGameModeBase::APlatesAndBlocksGameModeBase()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -15,18 +17,14 @@ APlatesAndBlocksGameModeBase::APlatesAndBlocksGameModeBase()
 	{
 		BoardActorsArray[count] = new AActor*[Width];
 	}
-					
+	
+	ColumnColorActorsArray = new AActor*[Width];
 }
 void APlatesAndBlocksGameModeBase::BeginPlay()
 {
 	//Initialize Color array
-		Super::BeginPlay();
-	for (int i = 0; i < QtyEachColorPlates; i++)
-	{
-		PlateColorsArr.Add(EPlateColor::Blue);
-		PlateColorsArr.Add(EPlateColor::Yellow);
-		PlateColorsArr.Add(EPlateColor::Red);
-	}
+	Super::BeginPlay();
+	
 	// X and Y axes according to UE4 project system coordinate
 	//Reset Board Actors Array Every Start or Repeat Game
 	if (!ensure(BoardActorsArray)) { return; }
@@ -38,16 +36,32 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 		}
 	}
 
+	InitializeColorArrays();
 	//At First Spawn Game Desk
 	//After that begin spawn plates and block 
 	//Plates Spawning at every even or zero column (start from 0)
 	//Blocks Spawning at odd columns and only at even or 0 rows (start from 0)
-	//A new plate at begin play calling GetRandomColor Method to colorize the plate 
+	//A new plate at begin play calling GetRandomPlateColor Method to colorize the plate 
 	//After spawn a new plate or block copy pointer to BoardActorsArray
 
  	ADesk* NewDesk = GetWorld()->SpawnActor<ADesk>(Desk_Blueprint, StartDeskLocation, FRotator::ZeroRotator);
 
-	FVector NewLocation = StartPlateLocation;
+	FVector NewLocation = StartColumnColorLocation;
+	for (int32 y = 0; y < Width; y++)
+	{
+		if (y % 2 == 0)
+		{
+			AColumnColor* NewColumnColor = GetWorld()->SpawnActor<AColumnColor>(ColumnColor_Blueprint, NewLocation, FRotator::ZeroRotator);
+
+			ColumnColorActorsArray[y] = NewColumnColor;
+		}
+		else
+		{
+			ColumnColorActorsArray[y] = nullptr;
+		}
+		NewLocation += FVector(0.f, 200.f, 0.f); // minus because x vector on the screen and in BoardActorsArray is the opposite directions
+	}
+	NewLocation = StartPlateLocation;
 	for (int32 y = 0; y < Width; y++)
 	{
 		for (int32 x = 0; x < Height; x++)
@@ -73,23 +87,36 @@ void APlatesAndBlocksGameModeBase::BeginPlay()
 	}
 }
 
+void APlatesAndBlocksGameModeBase::InitializeColorArrays()
+{
+	for (int i = 0; i < QtyEachColorPlates; i++)
+	{
+		PlateColorsArr.Add(EActorsColor::Blue);
+		PlateColorsArr.Add(EActorsColor::Yellow);
+		PlateColorsArr.Add(EActorsColor::Red);
+	}
+
+	ColumnColorsArr.Add(EActorsColor::Blue);
+	ColumnColorsArr.Add(EActorsColor::Yellow);
+	ColumnColorsArr.Add(EActorsColor::Red);
+}
+
 bool APlatesAndBlocksGameModeBase::CheckGameCompletion()
 {	
-	for (int y = 0; y < Width; y += 2) //Check only even or zero column
+	for (int y = 0; y < Width; y+=2) //Check only even or zero column
 	{	
-		EPlateColor PlateColor = EPlateColor::Unknown;
-		for (int x = 0; x < Height; x++)
+		EActorsColor ColumnColor = Cast<AColumnColor>(ColumnColorActorsArray[y])->GetColumnColor();
+		if (!ColumnColorActorsArray[y])
 		{
-			
+			return false;
+		}
+		for (int x = 0; x < Height; x++)
+		{		
 			if (BoardActorsArray[x][y] == nullptr)
-			{ 
-				return false;
-			}			
-			if (PlateColor == EPlateColor::Unknown)
 			{
-				PlateColor = Cast<APlate>(BoardActorsArray[x][y])->GetPlateColor();
+				return false;
 			}
-			else if (PlateColor != Cast<APlate>(BoardActorsArray[x][y])->GetPlateColor())
+			if (ColumnColor != Cast<APlate>(BoardActorsArray[x][y])->GetPlateColor())
 			{
 				return false;
 			}
@@ -99,21 +126,31 @@ bool APlatesAndBlocksGameModeBase::CheckGameCompletion()
 	return true;	
 }
 
-EPlateColor APlatesAndBlocksGameModeBase::GetRandomColor()
+EActorsColor APlatesAndBlocksGameModeBase::GetRandomPlateColor()
 {
-	int32 ArrColorsSize = PlateColorsArr.Num();
+	return APlatesAndBlocksGameModeBase::GetRandomColorfromArray(PlateColorsArr);
+}
+
+EActorsColor APlatesAndBlocksGameModeBase::GetRandomColumnColor()
+{
+	return APlatesAndBlocksGameModeBase::GetRandomColorfromArray(ColumnColorsArr);
+}
+
+EActorsColor APlatesAndBlocksGameModeBase::GetRandomColorfromArray(TArray<EActorsColor> &ColorsArray)
+{
+	int32 ArrColorsSize = ColorsArray.Num();
 	UE_LOG(LogTemp, Warning, TEXT("%i:"), ArrColorsSize);
 
-	auto randNum = FMath::RandRange(0, ArrColorsSize - 1);
+	int32 randNum = FMath::RandRange(0, ArrColorsSize - 1);
 	UE_LOG(LogTemp, Warning, TEXT("Random element %i:"), randNum);
-	
-	if (randNum >= PlateColorsArr.Num())
+
+	if (randNum >= ColorsArray.Num())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Request unexisted element at PlateColorsArr %i:"), randNum);
-		return EPlateColor::Unknown;
+		return EActorsColor::Unknown;
 	}
-	auto RetColor = PlateColorsArr[randNum];
-	PlateColorsArr.RemoveAt(randNum);
+	EActorsColor RetColor = ColorsArray[randNum];
+	ColorsArray.RemoveAt(randNum);
 
 	return RetColor;
 }

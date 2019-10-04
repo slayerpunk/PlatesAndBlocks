@@ -2,7 +2,7 @@
 
 
 #include "Plate.h"
-#include "PlatesAndBlocksGameModeBase.h"
+
 
 // Sets default values
 APlate::APlate()
@@ -17,7 +17,7 @@ void APlate::BeginPlay()
 	Super::BeginPlay();
 	GameMode = Cast<APlatesAndBlocksGameModeBase>(GetWorld()->GetAuthGameMode());
 
-	PlateColor = GameMode->GetRandomColor();
+	PlateColor = GameMode->GetRandomPlateColor();
 	RefreshColor();
 }
 
@@ -45,7 +45,7 @@ PlatePosition APlate::GetPlacement()
 	return PlatePos;
 }
 
-EPlateColor APlate::GetPlateColor()
+EActorsColor APlate::GetPlateColor()
 {
 	return PlateColor;
 }
